@@ -22,8 +22,8 @@ public class TestCart {
         cart.add("ult_small");
         cart.add("ult_small");
         cart.add("ult_large");
-        cart.total();
         cart.items();
+        cart.total();
         // Scenario 2
         cart = new ShoppingCart(prodCatalogue);
         System.out.println("Scenario 2 ======================================");
@@ -33,23 +33,23 @@ public class TestCart {
         cart.add("ult_large");
         cart.add("ult_large");
         cart.add("ult_large");
-        cart.total();
         cart.items();
+        cart.total();
         // Scenario 3
         cart = new ShoppingCart(prodCatalogue);
         System.out.println("Scenario 3 ======================================");
         cart.add("ult_small");
         cart.add("ult_medium");
         cart.add("ult_medium");
-        cart.total();
         cart.items();
+        cart.total();
         // Scenario 4
         cart = new ShoppingCart(prodCatalogue);
         System.out.println("Scenario 4 ======================================");
         cart.add("ult_small");
         cart.add("1gb", "I<3AMAYSIM");
-        cart.total();
         cart.items();
+        cart.total();
         
     }
     

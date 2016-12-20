@@ -1,5 +1,6 @@
 package testcart;
 
+import java.util.HashMap;
 import testcart.sim.SimProduct;
 import testcart.catalogue.Catalogue;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class Promo {
     
     public Promo(Catalogue catalogue, Map<String, Integer> orderList, boolean isPromoCodeActivated) {
         this.catalogue = catalogue;
-        this.orderList = orderList;
+        this.orderList = new HashMap<>(orderList);
         this.isPromoCodeActivated = isPromoCodeActivated;
     }
     
@@ -37,16 +38,13 @@ public class Promo {
             int quantity = Integer.parseInt(pair.getValue().toString());
             
             for(SimProduct product : catalogue.getProductList()) {
-                // buy 3 deal 2
+                // buy 3 deal 2 (applicable to the first 3 sim purchase only)
                 if(pair.getKey().equals(product.getProductCode()) && 
                         pair.getKey().equals(SIM_ULT_SMALL)) {
                     
                     if (quantity >= 3) {
-                        // get the price of not included in promo
-                        int excess = quantity % 3;
-                        newTotal += excess * product.getPrice();
                         // compute the buy 3 deal 2 promo
-                        newTotal += ((quantity - excess) / 3) * (2 * product.getPrice());
+                        newTotal += ((quantity - 1) * product.getPrice());
                     }
                     else {
                         newTotal += quantity * product.getPrice();

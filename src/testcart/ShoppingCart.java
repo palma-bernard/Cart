@@ -76,13 +76,38 @@ public class ShoppingCart {
     }
     
     public void items() {
-        if (orderList.size() > 0) {
-            System.out.println("Cart Items ====================================");
+            System.out.println("Items =========================================");
+            // print the list
+            printItems(orderList);
+            System.out.println("===============================================");
+    }
+    
+    public void total() {
+        DecimalFormat roundTotal = new DecimalFormat("#.##");
+        HashMap<String, Integer> totalList = null;
+        if (hasActivePromo) {
+            Promo promo = new Promo(catalogue, orderList, isPromoCodeActivated);
+            totalPrice = promo.implementPromoAndComputation();
+            totalList = new HashMap<>(promo.getUpdatedOrderList());
+            
+            System.out.println("Total Items ===================================");
+            printItems(totalList);
+            System.out.println("===============================================");
+        }
+        else {
+            printItems(orderList);
+        }
+        
+        System.out.println("Total Price: $" + roundTotal.format(totalPrice));
+    }
+    
+    private void printItems(Map<String, Integer> itemList) {
+        if (itemList.size() > 0) {
             // print the list
             for(SimProduct product : catalogue.getProductList()) {
-                for (Map.Entry pair : orderList.entrySet()) {
+                for (Map.Entry pair : itemList.entrySet()) {
                     if(product.getProductCode().equals(pair.getKey())) {
-                        System.out.println(pair.getValue() + "x " + product.getProductName());
+                        System.out.println(pair.getValue() + " x " + product.getProductName());
                         break;
                     }
                 }
@@ -91,21 +116,8 @@ public class ShoppingCart {
             if (isPromoCodeActivated) {
                 System.out.println(PROMO_CODE);
             }
-            System.out.println("==================================================");
         } else {
             System.out.println("No ordered items yet!");
         }
     }
-    
-    public void total() {
-        DecimalFormat roundTotal = new DecimalFormat("#.##");
-        if (hasActivePromo) {
-            Promo promo = new Promo(catalogue, orderList, isPromoCodeActivated);
-            totalPrice = promo.implementPromoAndComputation();
-            orderList = promo.getUpdatedOrderList();
-        }
-        
-        System.out.println("Cart Total: $" + roundTotal.format(totalPrice));
-    }
-    
 }
