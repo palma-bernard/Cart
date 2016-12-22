@@ -19,8 +19,9 @@ public class Promo {
     private final String SIM_ULT_MEDIUM = "ult_medium";
     private final String SIM_ULT_LARGE = "ult_large";
     private final String SIM_ONE_GB = "1gb";
-    private final double PROMO_CODE_DISCOUNT = 0.1;
     
+    // should be configurable (no time to implement)
+    private final double PROMO_CODE_DISCOUNT = 0.1;
     private final double SIM_ULT_LARGE_REPRICE = 39.9;
     
     public Promo(Catalogue catalogue, Map<String, Integer> orderList, boolean isPromoCodeActivated) {
@@ -29,7 +30,10 @@ public class Promo {
         this.isPromoCodeActivated = isPromoCodeActivated;
     }
     
-    public double implementPromoAndComputation() {
+    /**
+     * Implements the promo
+     */
+    public double implementPromoComputation() throws Exception {
         
         double newTotal = 0;
         boolean isUltMediumPromoApplied = false;
@@ -38,13 +42,16 @@ public class Promo {
             int quantity = Integer.parseInt(pair.getValue().toString());
             
             for(SimProduct product : catalogue.getProductList()) {
-                // buy 3 deal 2 (applicable to the first 3 sim purchase only)
+                // buy 3 deal 2 (for every 3 sims purchased)
                 if(pair.getKey().equals(product.getProductCode()) && 
                         pair.getKey().equals(SIM_ULT_SMALL)) {
                     
                     if (quantity >= 3) {
+                        // get the price of not included in promo
+                        int excess = quantity % 3;
+                        newTotal += excess * product.getPrice();
                         // compute the buy 3 deal 2 promo
-                        newTotal += ((quantity - 1) * product.getPrice());
+                        newTotal += ((quantity - excess) / 3) * (2 * product.getPrice());
                     }
                     else {
                         newTotal += quantity * product.getPrice();
